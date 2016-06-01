@@ -64,7 +64,8 @@ public class ApplicantFacesPortlet extends GenericFacesPortlet {
 		super.init(portletConfig);
 	}
 
-	// This method (along with the corresponding init-param in web.xml) is necessary in order to ensure that the
+	// Workaround for LPS-66225:
+	// This method (along with the corresponding servlet init-param in web.xml) is necessary in order to ensure that the
 	// context listeners have been called before the init(PortletConfig) method is called.
 	@Reference(target = "(servlet.init.portlet-class=com.liferay.faces.demos.portlet.ApplicantFacesPortlet)")
 	protected void setServlet(Servlet servlet) {
