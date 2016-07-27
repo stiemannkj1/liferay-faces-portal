@@ -13,7 +13,7 @@
  */
 package com.liferay.faces.portal.render.internal;
 
-import javax.servlet.jsp.JspWriter;
+import java.io.StringWriter;
 
 
 /**
@@ -23,5 +23,5 @@ public interface PortalTagOutputParser {
 
 	public String getScriptSectionMarker();
 
-	public PortalTagOutput parse(JspWriter stringJspWriter);
+	public PortalTagOutput parse(StringWriter stringWriter);
 }

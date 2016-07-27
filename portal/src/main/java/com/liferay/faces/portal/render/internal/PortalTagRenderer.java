@@ -14,9 +14,9 @@
 package com.liferay.faces.portal.render.internal;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Map;
 
-import javax.el.ELContext;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -25,25 +25,23 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.JspFactory;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyContent;
-import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.Tag;
 
 import com.liferay.faces.util.context.FacesRequestContext;
-import com.liferay.faces.util.jsp.BodyContentStringImpl;
-import com.liferay.faces.util.jsp.JspWriterStringImpl;
-import com.liferay.faces.util.jsp.PageContextFactory;
 
+import com.liferay.portal.kernel.servlet.JSPSupportServlet;
+import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import com.liferay.taglib.BaseBodyTagSupport;
-import com.liferay.taglib.aui.ScriptTag;
 
 
 /**
@@ -191,9 +189,13 @@ public abstract class PortalTagRenderer<U extends UIComponent, T extends Tag> ex
 		PortletResponse portletResponse = (PortletResponse) externalContext.getResponse();
 		HttpServletResponse httpServletResponse = getHttpServletResponse(portletResponse);
 		String contentType = httpServletResponse.getContentType();
-		ELContext elContext = facesContext.getELContext();
-		PageContext stringPageContext = PageContextFactory.getStringPageContextInstance(httpServletRequest,
-				httpServletResponse, elContext);
+		StringWriter stringWriter = new StringWriter();
+		JspFactory jspFactory = JspFactory.getDefaultFactory();
+		ServletContext servletContext = httpServletRequest.getServletContext();
+		JSPSupportServlet jspSupportServlet = new JSPSupportServlet(servletContext);
+		PageContext stringPageContext = jspFactory.getPageContext(jspSupportServlet, httpServletRequest,
+				httpServletResponse, null, false, 0, false);
+		stringPageContext.pushBody(stringWriter);
 
 		// Invoke the JSP tag lifecycle directly (rather than using the tag from a JSP).
 		tag.setPageContext(stringPageContext);
@@ -204,7 +206,9 @@ public abstract class PortalTagRenderer<U extends UIComponent, T extends Tag> ex
 			BodyContent bodyContent = bodyTag.getBodyContent();
 
 			if (bodyContent == null) {
-				bodyContent = new BodyContentStringImpl(new JspWriterStringImpl());
+
+				bodyContent = stringPageContext.pushBody();
+				stringPageContext.popBody();
 				bodyTag.setBodyContent(bodyContent);
 			}
 
@@ -221,7 +225,6 @@ public abstract class PortalTagRenderer<U extends UIComponent, T extends Tag> ex
 		// If executing within an Ajax request, then write all the scripts contained in the AUI_SCRIPT_DATA attribute
 		// directly to the tag output.
 		PartialViewContext partialViewContext = facesContext.getPartialViewContext();
-		JspWriter jspWriter = stringPageContext.getOut();
 
 		if (partialViewContext.isAjaxRequest()) {
 
@@ -236,14 +239,14 @@ public abstract class PortalTagRenderer<U extends UIComponent, T extends Tag> ex
 			// StringBundler data = HtmlTopTag.getData(httpServletRequest, WebKeys.PAGE_TOP);
 			//J+
 
-			Object scriptData = httpServletRequest.getAttribute(WebKeys.AUI_SCRIPT_DATA);
+			ScriptData scriptData = (ScriptData) httpServletRequest.getAttribute(WebKeys.AUI_SCRIPT_DATA);
 
 			if (scriptData != null) {
 
 				try {
 
-					jspWriter.write(portalTagOutputParser.getScriptSectionMarker());
-					ScriptTag.flushScriptData(stringPageContext);
+					stringWriter.write(portalTagOutputParser.getScriptSectionMarker());
+					scriptData.writeTo(stringWriter);
 				}
 				catch (Exception e) {
 					throw new JspException(e);
@@ -251,7 +254,9 @@ public abstract class PortalTagRenderer<U extends UIComponent, T extends Tag> ex
 			}
 		}
 
+		stringPageContext.release();
+
 		// Return the tag output.
-		return portalTagOutputParser.parse(jspWriter);
+		return portalTagOutputParser.parse(stringWriter);
 	}
 }

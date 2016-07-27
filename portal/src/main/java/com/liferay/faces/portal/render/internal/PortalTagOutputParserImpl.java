@@ -13,7 +13,7 @@
  */
 package com.liferay.faces.portal.render.internal;
 
-import javax.servlet.jsp.JspWriter;
+import java.io.StringWriter;
 
 import com.liferay.portal.kernel.util.ContentTypes;
 
@@ -33,9 +33,9 @@ public class PortalTagOutputParserImpl implements PortalTagOutputParser {
 	}
 
 	@Override
-	public PortalTagOutput parse(JspWriter stringJspWriter) {
+	public PortalTagOutput parse(StringWriter stringWriter) {
 
-		String markup = stringJspWriter.toString();
+		String markup = stringWriter.toString();
 		String scriptText = null;
 		StringBuilder scriptBuilder = new StringBuilder();
 
