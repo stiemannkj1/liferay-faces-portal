@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2016 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2017 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,22 +14,39 @@
 package com.liferay.faces.demos.bean;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
+import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UICommand;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 
 import com.liferay.faces.bridge.event.FileUploadEvent;
 import com.liferay.faces.bridge.model.UploadedFile;
+import com.liferay.faces.demos.adt.MyTemplateHandler;
 import com.liferay.faces.demos.dto.City;
 import com.liferay.faces.util.context.FacesContextHelperUtil;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
+
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+
+import com.liferay.portlet.display.template.PortletDisplayTemplateUtil;
 
 
 /**
@@ -80,6 +97,35 @@ public class ApplicantBackingBean implements Serializable {
 		}
 		catch (Exception e) {
 			logger.error(e);
+		}
+	}
+
+	public String getRenderedTemplateMarkup() {
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		PortletRequest portletRequest = (PortletRequest) externalContext.getRequest();
+		PortletResponse portletResponse = (PortletResponse) externalContext.getResponse();
+		HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(portletRequest);
+		HttpServletResponse httpServletResponse = PortalUtil.getHttpServletResponse(portletResponse);
+
+		// In most cases you would want to obtain the template rather than create a new one.
+		DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.createDDMTemplate(1434567890);
+		ddmTemplate.setScript("<strong>${currentURL}</strong>");
+
+		ClassName className = ClassNameLocalServiceUtil.getClassName(MyTemplateHandler.class.getName());
+		ddmTemplate.setClassName(className.getClassName());
+
+		long classNameId = className.getClassNameId();
+		ddmTemplate.setClassNameId(classNameId);
+		ddmTemplate.setLanguage("ftl");
+
+		try {
+			return PortletDisplayTemplateUtil.renderDDMTemplate(httpServletRequest, httpServletResponse, ddmTemplate,
+					Collections.emptyList());
+		}
+		catch (Exception e) {
+			throw new FacesException(e);
 		}
 	}
 
