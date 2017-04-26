@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>FACES-257-portlet</module>
+		<module>FACES-2937-portlet</module>
 	</modules>
 
 	<profiles>

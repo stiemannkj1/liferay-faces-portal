@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:a4j="http://richfaces.org/a4j"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:ace="http://www.icefaces.org/icefaces/components"
+		xmlns:alloy="http://liferay.com/faces/alloy"
+		xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+	<h:head />
+	<h:body>
+		<a href="http://issues.liferay.com/browse/FACES-2937"><span>http://issues.liferay.com/browse/FACES-2937</span></a>
+		<hr />
+		<alloy:form											pt:data-data-senna-off-true-expected="true" />
+		<h:form pt:data-senna-off="false"					pt:data-data-senna-off-true-expected="false" />
+		<h:form												pt:data-data-senna-off-true-expected="true">
+
+			<!-- FACES-2937 SennaJS disabled for all links which are children of forms -->
+			<alloy:link value="alloy:link"					pt:data-data-senna-off-true-expected="false" /><br />
+			<p:link value="p:link"							pt:data-data-senna-off-true-expected="false" /><br />
+			<h:link value="h:link"							pt:data-data-senna-off-true-expected="false" /><br />
+			<!-- /FACES-2937 -->
+
+			<alloy:commandLink value="alloy:commandLink"	pt:data-data-senna-off-true-expected="true" /><br />
+			<p:commandLink value="p:commandLink"			pt:data-data-senna-off-true-expected="true" /><br />
+			<ace:linkButton value="ace:linkButton"			pt:data-data-senna-off-true-expected="true" /><br />
+			<h:link value="h:link"							pt:data-data-senna-off-true-expected="false" /><br />
+			<a4j:commandLink value="a4j:commandLink"		pt:data-data-senna-off-true-expected="true" /><br />
+			<h:commandLink value="h:commandLink"			pt:data-data-senna-off-true-expected="true" /><br />
+			<h:commandLink value="h:commandLink data-senna-off=&quot;false&quot;" pt:data-senna-off="false"
+															pt:data-data-senna-off-true-expected="false" /><br />
+			<h:commandButton value="h:commandButton"		pt:data-data-senna-off-true-expected="false" /><br />
+		</h:form>
+
+		<alloy:link value="alloy:link"						pt:data-data-senna-off-true-expected="false" /><br />
+		<p:link value="p:link"								pt:data-data-senna-off-true-expected="false" /><br />
+		<h:link value="h:link"								pt:data-data-senna-off-true-expected="false" /><br />
+	</h:body>
+</f:view>
