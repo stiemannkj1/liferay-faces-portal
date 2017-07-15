@@ -82,18 +82,6 @@ public class LoginBackingBean {
 		ActionResponse actionResponse = PortletHelperUtil.getActionResponse(facesContext);
 		ThemeDisplay themeDisplay = LiferayPortletHelperUtil.getThemeDisplay(facesContext);
 		HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(portletRequest);
-
-		// If the request object is a wrapper that handles special namespacing considerations for portlet session
-		// attributes, then get the inner-most wrapped request. This will ensure that the following call to
-		// LoginUtil.login(...) will be able to work with a session that has an attribute map shared by the portal.
-		if (httpServletRequest.getClass().getName().equals(NAMESPACE_SERVLET_REQUEST_FQCN)) {
-
-			while (httpServletRequest instanceof HttpServletRequestWrapper) {
-				HttpServletRequestWrapper httpServletRequestWrapper = (HttpServletRequestWrapper) httpServletRequest;
-				httpServletRequest = (HttpServletRequest) httpServletRequestWrapper.getRequest();
-			}
-		}
-
 		HttpServletResponse httpServletResponse = PortalUtil.getHttpServletResponse(actionResponse);
 
 		String handle = loginModelBean.getHandle();
@@ -105,8 +93,7 @@ public class LoginBackingBean {
 
 		try {
 
-			LoginUtilCompat.invokeLogin(httpServletRequest, httpServletResponse, handle, password, rememberMe,
-				authType);
+			LoginUtilCompat.login(httpServletRequest, httpServletResponse, handle, password, rememberMe, authType);
 
 			authenticated = true;
 		}
