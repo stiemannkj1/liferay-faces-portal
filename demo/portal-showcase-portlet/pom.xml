@@ -14,7 +14,10 @@
 	<description>This plugin is the Liferay Faces Portal Showcase demo portlet.</description>
 
 	<properties>
+		<filter.web.inf.properties>true</filter.web.inf.properties>
+		<import.package></import.package>
 		<validate.captcha.for.test>false</validate.captcha.for.test>
+		<war.dependency.scope>compile</war.dependency.scope>
 	</properties>
 
 	<profiles>
@@ -23,6 +26,74 @@
 			<properties>
 				<validate.captcha.for.test>true</validate.captcha.for.test>
 			</properties>
+		</profile>
+		<profile>
+			<id>thin-war</id>
+			<properties>
+				<!--
+					The package of FacesInitializer must also be explicitly imported below since the BND tools do not
+					automatically add ServletContainerInitializer imports.
+				-->
+				<faces.servlet.container.initializer>com.liferay.faces.bridge.ext.osgi.mojarra.servlet.FacesInitializer</faces.servlet.container.initializer>
+				<!-- JSP imports are necessary for Mojarra even though this webapp doesn't use JSP. -->
+				<!-- EL imports are necessary for Mojarra. -->
+				<!--
+					The optional imports are automatically added by Liferay but are not provided, they are not necessary
+					so mark them as optional to allow the portlet to deploy without them.
+				-->
+				<import.package>
+					Import-Package: \
+						!com.liferay.faces.showcase.*,\
+						javax.el;version="[2.2.0,4.0.0)",\
+						javax.faces.view;version="[2.2,3)",\
+						javax.faces.webapp;version="[2.2,3)",\
+						com.liferay.faces.bridge.ext.osgi.mojarra.servlet,\
+						com.swabunga.spell.*;resolution:=optional,\
+						org.apache.axis.*;resolution:=optional,\
+						org.apache.bsf.*;resolution:=optional,\
+						org.apache.poi.*;resolution:=optional,\
+						org.apache.portals.*;resolution:=optional,\
+						net.fortuna.ical4j.*;resolution:=optional,\
+						*
+				</import.package>
+				<webapp.descriptor>web-thin-war.xml</webapp.descriptor>
+				<war.dependency.scope>provided</war.dependency.scope>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<mkdir dir="${project.build.outputDirectory}/META-INF/services" />
+										<echo message="${faces.servlet.container.initializer}"
+											  file="${project.build.outputDirectory}/META-INF/services/javax.servlet.ServletContainerInitializer" />
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>com.liferay.faces</groupId>
+					<artifactId>com.liferay.faces.util</artifactId>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.glassfish</groupId>
+					<artifactId>javax.faces</artifactId>
+					<version>${mojarra.version}</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 
@@ -59,19 +130,23 @@
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>com.liferay.faces.bridge.api</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>com.liferay.faces.bridge.impl</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>com.liferay.faces.bridge.ext</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>com.liferay.faces.portal</artifactId>
 			<version>${project.version}</version>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.faces.demo</groupId>
@@ -87,18 +162,22 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jstl-impl</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 	</dependencies>
 
