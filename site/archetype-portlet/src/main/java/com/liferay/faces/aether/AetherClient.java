@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2017 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2018 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -58,29 +58,29 @@ import com.liferay.faces.util.logging.LoggerFactory;
  */
 public class AetherClient {
 
+	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(AetherClient.class);
 
-	private static final File DEFAULT_GLOBAL_SETTINGS_FILE = new File(System.getProperty("maven.home",
-				System.getProperty("user.dir", "")), "conf/settings.xml");
-
-	private static final String USER_HOME = System.getProperty("user.home");
-
-	private static final File USER_MAVEN_CONFIGURATION_HOME = new File(USER_HOME, ".m2");
-
-	private static final File USER_MAVEN_DEFAULT_USER_SETTINGS_FILE = new File(USER_MAVEN_CONFIGURATION_HOME,
-			"settings.xml");
-
+	// Public Constants
 	public static final String MAVEN_CENTRAL_URL = "https://repo1.maven.org/maven2";
 	public static final String SONATYPE_SNAPSHOT_URL = "https://oss.sonatype.org/content/repositories/snapshots";
 	public static final String PUBLIC_LIFERAY_URL = "http://repository.liferay.com/nexus/content/groups/public/";
 
-	private static final String[] _defaultRepoUrls = { MAVEN_CENTRAL_URL };
+	// Private Constants
+	private static final File DEFAULT_GLOBAL_SETTINGS_FILE = new File(System.getProperty("maven.home",
+				System.getProperty("user.dir", "")), "conf/settings.xml");
+	private static final String USER_HOME = System.getProperty("user.home");
+	private static final File USER_MAVEN_CONFIGURATION_HOME = new File(USER_HOME, ".m2");
+	private static final File USER_MAVEN_DEFAULT_USER_SETTINGS_FILE = new File(USER_MAVEN_CONFIGURATION_HOME,
+			"settings.xml");
+	private static final String[] DEFAULT_REPO_URLS = { MAVEN_CENTRAL_URL };
 
-	private final String _localRepositoryPath;
-	private final String[] _repoUrls;
+	// Private Final Data Members
+	private final String localRepositoryPath;
+	private final String[] repoUrls;
 
 	public AetherClient() {
-		this(_defaultRepoUrls);
+		this(DEFAULT_REPO_URLS);
 	}
 
 	public AetherClient(String[] repoUrls) {
@@ -88,8 +88,9 @@ public class AetherClient {
 	}
 
 	public AetherClient(String[] repoUrls, String localRepositoryPath) {
-		_repoUrls = (repoUrls == null) ? new String[0] : repoUrls;
-		_localRepositoryPath = localRepositoryPath;
+
+		this.repoUrls = (repoUrls == null) ? new String[0] : repoUrls;
+		this.localRepositoryPath = localRepositoryPath;
 	}
 
 	private static Settings buildSettings() {
@@ -164,7 +165,7 @@ public class AetherClient {
 		final RepositorySystem system = newRepositorySystem();
 		final List<RemoteRepository> repos = repos();
 
-		final RepositorySystemSession session = newRepositorySystemSession(system, _localRepositoryPath);
+		final RepositorySystemSession session = newRepositorySystemSession(system, localRepositoryPath);
 
 		Artifact artifact = new DefaultArtifact(groupIdArtifactIdVersion);
 		ArtifactRequest artifactRequest = new ArtifactRequest();
@@ -188,7 +189,7 @@ public class AetherClient {
 		rangeRequest.setArtifact(artifactRange);
 		rangeRequest.setRepositories(repos);
 
-		final RepositorySystemSession session = newRepositorySystemSession(system, _localRepositoryPath);
+		final RepositorySystemSession session = newRepositorySystemSession(system, localRepositoryPath);
 
 		Version version = null;
 
@@ -225,7 +226,7 @@ public class AetherClient {
 		rangeRequest.setArtifact(artifactRange);
 		rangeRequest.setRepositories(repos);
 
-		final RepositorySystemSession session = newRepositorySystemSession(system, _localRepositoryPath);
+		final RepositorySystemSession session = newRepositorySystemSession(system, localRepositoryPath);
 
 		Version version = null;
 
@@ -245,7 +246,7 @@ public class AetherClient {
 
 		final List<RemoteRepository> repos = new ArrayList<RemoteRepository>();
 
-		for (String repoUrl : _repoUrls) {
+		for (String repoUrl : repoUrls) {
 			repos.add(newRemoteRepository(repoUrl));
 		}
 

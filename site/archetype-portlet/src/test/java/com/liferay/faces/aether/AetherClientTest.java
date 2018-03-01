@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2017 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2018 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -18,9 +18,7 @@ import java.io.File;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.version.Version;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.liferay.faces.util.logging.Logger;
@@ -32,7 +30,34 @@ import com.liferay.faces.util.logging.LoggerFactory;
  */
 public class AetherClientTest {
 
+	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(AetherClientTest.class);
+
+	//J-
+	// If you would like to test the use of another local repository in your file system, just
+	// copy the repository into the root of this project and name it "test-localrepo".
+	//
+	// If it contains an artifact with a GAV:
+	// com.liferay:com.liferay.gradle.plugins.workspace:1.0.1:jar:sources
+	// then this test should pass.
+	//
+	// This project does not need this functionality, so I am commenting this test out.
+	//
+	// @Test
+	//J+
+	public void testCheckLatestArchetypeVersionOffline() throws Exception {
+		AetherClient client = new AetherClient(null, "test-localrepo");
+
+		File artifact = client.getLatestAvailableArtifact(
+				"com.liferay:com.liferay.gradle.plugins.workspace:jar:sources");
+
+		Assert.assertNotNull(artifact);
+		Assert.assertTrue(artifact.exists());
+		Assert.assertTrue(artifact.getName().startsWith("com.liferay.gradle.plugins.workspace"));
+		Assert.assertTrue(artifact.getName().endsWith("sources.jar"));
+		Assert.assertTrue(artifact.getPath().contains("test-localrepo"));
+		Assert.assertTrue(artifact.getName().contains("1.0.1"));
+	}
 
 	@Test
 	public void testGetArtifactUsingGAV() throws Exception {
@@ -46,32 +71,22 @@ public class AetherClientTest {
 
 		logger.info("artifact.getCanonicalPath() =" + artifact.getCanonicalPath());
 
-		assertNotNull(artifact);
-		assertTrue(artifact.exists());
-		assertTrue(artifact.getName().startsWith("com.liferay.faces.archetype"));
-		assertTrue(artifact.getName().endsWith(".jar"));
-		assertTrue(artifact.getName().contains("5.0.0"));
+		Assert.assertNotNull(artifact);
+		Assert.assertTrue(artifact.exists());
+		Assert.assertTrue(artifact.getName().startsWith("com.liferay.faces.archetype"));
+		Assert.assertTrue(artifact.getName().endsWith(".jar"));
+		Assert.assertTrue(artifact.getName().contains("5.0.0"));
 	}
 
 	@Test
-	public void testMissingArtifact() throws Exception {
+	public void testGetVersionOfLatestMinorFromCentral() throws Exception {
+		AetherClient client = new AetherClient(new String[] { "https://repo1.maven.org/maven2/" });
 
-		String version = "0.0.0";
+		Version version = client.getVersionOfLatestMinor(
+				"com.liferay.faces.archetype:com.liferay.faces.archetype.primefaces.portlet:jar", 5L);
 
-		String groupId = "com.liferay.faces.archetype";
-		String suite = "primefaces";
-		String groupIdArtifactIdVersion = groupId + ":" + groupId + "." + suite + ".portlet:jar:" + version;
-
-		AetherClient client = new AetherClient();
-
-		File artifact = null;
-		try {
-			artifact = client.getArtifact(groupIdArtifactIdVersion);
-		} catch(ArtifactResolutionException e) {
-			logger.info("testMissingArtifact: e.getMessage() = " + e.getMessage());
-		}
-		assertTrue(artifact == null);
-		logger.info("testMissingArtifact: artifact = " + artifact);
+		Assert.assertNotNull(version);
+		logger.info("testGetVersionOfLatestMinorFromCentral: version = " + version);
 	}
 
 	@Test
@@ -89,41 +104,32 @@ public class AetherClientTest {
 
 		Version version = client.getVersionOfLatestMinor(groupIdArtifactId, new Long(major));
 
-		assertNotNull(version);
+		Assert.assertNotNull(version);
 		logger.info("testGetVersionOfLatestMinorWithMajorFromString: version = " + version);
 	}
 
 	@Test
-	public void testGetVersionOfLatestMinorFromCentral() throws Exception {
-		AetherClient client = new AetherClient(new String[] { "https://repo1.maven.org/maven2/" });
+	public void testMissingArtifact() throws Exception {
 
-		Version version = client.getVersionOfLatestMinor("com.liferay.faces.archetype:com.liferay.faces.archetype.primefaces.portlet:jar", 5L);
+		String version = "0.0.0";
 
-		assertNotNull(version);
-		logger.info("testGetVersionOfLatestMinorFromCentral: version = " + version);
-	}
+		String groupId = "com.liferay.faces.archetype";
+		String suite = "primefaces";
+		String groupIdArtifactIdVersion = groupId + ":" + groupId + "." + suite + ".portlet:jar:" + version;
 
-	// If you would like to test the use of another local repository in your file system, just
-	// copy the repository into the root of this project and name it "test-localrepo".
-	//
-	// If it contains an artifact with a GAV:
-	// com.liferay:com.liferay.gradle.plugins.workspace:1.0.1:jar:sources
-	// then this test should pass.
-	//
-	// This project does not need this functionality, so I am commenting this test out.
-	//
-	// @Test
-	public void testCheckLatestArchetypeVersionOffline() throws Exception {
-		AetherClient client = new AetherClient(null, "test-localrepo");
+		AetherClient client = new AetherClient();
 
-		File artifact = client.getLatestAvailableArtifact("com.liferay:com.liferay.gradle.plugins.workspace:jar:sources");
+		File artifact = null;
 
-		assertNotNull(artifact);
-		assertTrue(artifact.exists());
-		assertTrue(artifact.getName().startsWith("com.liferay.gradle.plugins.workspace"));
-		assertTrue(artifact.getName().endsWith("sources.jar"));
-		assertTrue(artifact.getPath().contains("test-localrepo"));
-		assertTrue(artifact.getName().contains("1.0.1"));
+		try {
+			artifact = client.getArtifact(groupIdArtifactIdVersion);
+		}
+		catch (ArtifactResolutionException e) {
+			logger.info("testMissingArtifact: e.getMessage() = " + e.getMessage());
+		}
+
+		Assert.assertTrue(artifact == null);
+		logger.info("testMissingArtifact: artifact = " + artifact);
 	}
 
 }
