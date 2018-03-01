@@ -18,5 +18,6 @@ package com.liferay.portal.util;
  */
 public class WebKeys {
 
+	// Public Constants
 	public static final String HTTPS_INITIAL = "HTTPS_INITIAL";
 }

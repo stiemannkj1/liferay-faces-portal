@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
  */
 public class RegisterExpandoAction extends SimpleAction {
 
+	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(RegisterExpandoAction.class);
 
 	@Override

@@ -34,8 +34,10 @@ import com.liferay.faces.util.logging.LoggerFactory;
 @RequestScoped
 public class InputRichTextBacking {
 
+	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(InputRichTextBacking.class);
 
+	// Private Data Members
 	private Applicant applicant;
 	private boolean resizable = true;
 

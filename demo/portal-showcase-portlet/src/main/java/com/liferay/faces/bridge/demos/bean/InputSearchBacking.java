@@ -31,8 +31,10 @@ import com.liferay.faces.util.logging.LoggerFactory;
 @RequestScoped
 public class InputSearchBacking {
 
+	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(InputSearchBacking.class);
 
+	// Private Data Members
 	private String searchText;
 
 	public String getSearchText() {
