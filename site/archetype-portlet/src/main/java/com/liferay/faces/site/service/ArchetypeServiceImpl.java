@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2017 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2018 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -63,14 +63,18 @@ public class ArchetypeServiceImpl implements ArchetypeService {
 	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(ArchetypeServiceImpl.class);
 
-	private static String groupId = "com.liferay.faces.archetype";
-	private static String archetypeSuffix = "portlet";
-
 	// Private Constants
-	private static final String ARCHETYPE_GENERATE_COMMAND = "mvn archetype:generate \\<br />" +
-		"  -DarchetypeGroupId=" + groupId + " \\<br />" + "  -DarchetypeArtifactId=" + groupId + ".SUITE." +
-		archetypeSuffix + " \\<br />" + "  -DarchetypeVersion=VERSION \\<br />" + "  -DgroupId=com.mycompany \\<br />" +
-		"  -DartifactId=com.mycompany.my.SUITE." + archetypeSuffix;
+	private static final String ARCHETYPE_SUFFIX = "portlet";
+	private static final String GROUP_ID = "com.liferay.faces.archetype";
+	//J-
+	private static final String ARCHETYPE_GENERATE_COMMAND_TEMPLATE =
+		"mvn archetype:generate \\<br />" +
+		"  -DarchetypeGroupId=" + GROUP_ID + " \\<br />" +
+		"  -DarchetypeArtifactId=" + GROUP_ID + ".SUITE." + ARCHETYPE_SUFFIX + " \\<br />" +
+		"  -DarchetypeVersion=VERSION \\<br />" +
+		"  -DgroupId=com.mycompany \\<br />" +
+		"  -DartifactId=com.mycompany.my.SUITE." + ARCHETYPE_SUFFIX;
+	//J+
 
 	private static final String DEFAULT_CONTEXT = "https://repo1.maven.org/maven2/com/liferay/faces/archetype/";
 	private static final String SNAPSHOT_CONTEXT =
@@ -390,18 +394,18 @@ public class ArchetypeServiceImpl implements ArchetypeService {
 
 			for (Element potentialSuite : suitesDocument.select("td,pre").select("a")) {
 
-				if (potentialSuite.attr("href").contains(groupId)) {
+				if (potentialSuite.attr("href").contains(GROUP_ID)) {
 
 					String suite;
 
 					if (potentialSuite.attr("href").contains(archetypeContext)) {
 						suite = potentialSuite.attr("href").substring(archetypeContext.length()).replaceAll("/", "")
-							.substring((groupId + ".").length()).replace("." + archetypeSuffix, "");
+							.substring((GROUP_ID + ".").length()).replace("." + ARCHETYPE_SUFFIX, "");
 						nextUrl = potentialSuite.attr("href");
 					}
 					else {
-						suite = potentialSuite.attr("href").replaceAll("/", "").substring((groupId + ".").length())
-							.replace("." + archetypeSuffix, "");
+						suite = potentialSuite.attr("href").replaceAll("/", "").substring((GROUP_ID + ".").length())
+							.replace("." + ARCHETYPE_SUFFIX, "");
 						nextUrl = archetypeContext + potentialSuite.attr("href");
 					}
 
@@ -432,7 +436,7 @@ public class ArchetypeServiceImpl implements ArchetypeService {
 						logger.debug("init: suite = " + suite);
 						logger.debug("init: archetypeVersion = " + archetypeVersion);
 
-						String groupIdArtifactId = groupId + ":" + groupId + "." + suite + "." + archetypeSuffix +
+						String groupIdArtifactId = GROUP_ID + ":" + GROUP_ID + "." + suite + "." + ARCHETYPE_SUFFIX +
 							":jar";
 
 						if (archetypeVersion.matches("\\d+\\..*")) {
@@ -481,14 +485,14 @@ public class ArchetypeServiceImpl implements ArchetypeService {
 									String jsfVersion = jsfMap.get(qualifiedMajor);
 									String liferayVersion = liferayMap.get(qualifiedMajor);
 
-									String mavenCommand = ARCHETYPE_GENERATE_COMMAND.replace("VERSION",
+									String mavenCommand = ARCHETYPE_GENERATE_COMMAND_TEMPLATE.replace("VERSION",
 											archetypeVersion).replaceAll("SUITE", suite);
 
 									try {
 
 										// use the latest minor version (of the given major version number)
-										String groupIdArtifactIdVersion = groupId + ":" + groupId + "." + suite + "." +
-											archetypeSuffix + ":jar:" + latestMinorVersion;
+										String groupIdArtifactIdVersion = GROUP_ID + ":" + GROUP_ID + "." + suite +
+											"." + ARCHETYPE_SUFFIX + ":jar:" + latestMinorVersion;
 										File artifact = client.getArtifact(groupIdArtifactIdVersion);
 										String dependencyLines = extractMavenDependencies(artifact);
 										String gradleLines = extractGradle(artifact);

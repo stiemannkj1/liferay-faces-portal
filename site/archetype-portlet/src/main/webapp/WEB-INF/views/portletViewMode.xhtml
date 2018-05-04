@@ -45,8 +45,10 @@
 				<alloy:column width="70">
 					<alloy:fieldset>
 						<alloy:field id="command" label="Archetype">
-							<pre><alloy:outputText value="# #{archetypeBacking.selectedConfiguration}" /><br/>
-								<alloy:outputText escape="false" value="#{archetypeBacking.selectedArchetype.command}" /></pre>
+							<pre>
+								<alloy:outputText value="# #{archetypeBacking.selectedConfiguration}" /><br/>
+								<alloy:outputText escape="false"
+									value="#{archetypeBacking.selectedArchetype.getCommand(browserSniffer, archetypeBacking.favoriteBuild)}" /></pre>
 						</alloy:field>
 					</alloy:fieldset>
 				</alloy:column>

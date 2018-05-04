@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2017 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2018 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,6 +14,8 @@
 package com.liferay.faces.site.dto;
 
 import java.io.Serializable;
+
+import com.liferay.faces.util.client.BrowserSniffer;
 
 
 /**
@@ -42,8 +44,30 @@ public class Archetype implements Serializable {
 		this.command = command;
 	}
 
-	public String getCommand() {
-		return command;
+	public String getCommand(BrowserSniffer browserSniffer, String favoriteBuild) {
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(command);
+		stringBuilder.append(" &amp;&amp;<br />");
+
+		if (browserSniffer.isWindows()) {
+			stringBuilder.append("del");
+		}
+		else {
+			stringBuilder.append("rm");
+		}
+
+		if ("maven".equals(favoriteBuild)) {
+			stringBuilder.append(" build.gradle");
+		}
+		else if ("gradle".equals(favoriteBuild)) {
+			stringBuilder.append(" pom.xml");
+		}
+		else {
+			throw new IllegalStateException("Selected build tool is not maven or gradle.");
+		}
+
+		return stringBuilder.toString();
 	}
 
 	public String getDependencies() {
