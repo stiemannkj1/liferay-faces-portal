@@ -51,13 +51,17 @@ import com.liferay.users.admin.kernel.util.UsersAdminUtil;
  *
  * @author  Neil Griffin
  */
-public class RegistrantServiceUtil {
+public final class RegistrantServiceUtil {
 
 	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(RegistrantServiceUtil.class);
 
 	// Public Constants
 	public static final String PHONE_CLASS_NAME = "com.liferay.portal.kernel.model.Contact.phone";
+
+	private RegistrantServiceUtil() {
+		throw new AssertionError();
+	}
 
 	public static Registrant add(long creatorUserId, long companyId, Locale locale, Registrant registrant,
 		boolean active, boolean autoScreenName, boolean sendEmail) throws PortalException, SystemException {
