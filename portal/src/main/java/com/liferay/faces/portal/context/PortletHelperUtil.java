@@ -28,6 +28,8 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 
 /**
  * This class contains a set of static convenience methods that delegate to the corresponding methods on {@link
@@ -35,6 +37,7 @@ import javax.portlet.WindowState;
  *
  * @author  Neil Griffin
  */
+@ProviderType
 public final class PortletHelperUtil {
 
 	private PortletHelperUtil() {

@@ -15,11 +15,14 @@ package com.liferay.faces.portal.component.navbar;
 
 import javax.faces.component.FacesComponent;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Neil Griffin
  */
 @FacesComponent(value = NavBar.COMPONENT_TYPE)
+@ConsumerType
 public class NavBar extends NavBarBase {
 	// Initial Generation
 }

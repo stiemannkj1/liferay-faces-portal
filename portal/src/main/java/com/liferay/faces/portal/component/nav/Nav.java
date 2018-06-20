@@ -15,11 +15,14 @@ package com.liferay.faces.portal.component.nav;
 
 import javax.faces.component.FacesComponent;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Neil Griffin
  */
 @FacesComponent(value = Nav.COMPONENT_TYPE)
+@ConsumerType
 public class Nav extends NavBase {
 	// Initial Generation
 }

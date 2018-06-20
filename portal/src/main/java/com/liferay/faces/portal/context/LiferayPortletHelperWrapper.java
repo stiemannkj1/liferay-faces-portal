@@ -17,6 +17,8 @@ import java.util.List;
 
 import javax.faces.FacesWrapper;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 import com.liferay.faces.portal.security.AuthorizationException;
 
 import com.liferay.portal.kernel.exception.SystemException;
@@ -34,6 +36,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 /**
  * @author  Neil Griffin
  */
+@ConsumerType
 public abstract class LiferayPortletHelperWrapper implements LiferayPortletHelper, FacesWrapper<LiferayPortletHelper> {
 
 	@Override

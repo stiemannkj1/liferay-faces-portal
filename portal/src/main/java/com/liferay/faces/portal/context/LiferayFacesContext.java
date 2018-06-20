@@ -48,6 +48,8 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import com.liferay.faces.portal.security.AuthorizationException;
 import com.liferay.faces.util.context.FacesContextHelper;
 import com.liferay.faces.util.logging.Logger;
@@ -72,6 +74,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
  * @author      Neil Griffin
  */
 @Deprecated
+@ProviderType
 public abstract class LiferayFacesContext extends FacesContext implements FacesContextHelper, PortletHelper,
 	LiferayPortletHelper {
 

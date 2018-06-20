@@ -17,11 +17,14 @@ package com.liferay.faces.portal.component.permissionsurl;
 import javax.annotation.Generated;
 import javax.faces.component.UIOutput;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 
 /**
  * @author	Neil Griffin
  */
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
+@ProviderType
 public abstract class PermissionsURLBase extends UIOutput {
 
 	// Public Constants

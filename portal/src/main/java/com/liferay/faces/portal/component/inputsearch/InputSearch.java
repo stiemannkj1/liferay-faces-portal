@@ -26,6 +26,8 @@ import javax.faces.event.ListenersFor;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.render.Renderer;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 import com.liferay.faces.util.event.PreRenderComponentEventListener;
 
 
@@ -34,6 +36,7 @@ import com.liferay.faces.util.event.PreRenderComponentEventListener;
  */
 @FacesComponent(value = InputSearch.COMPONENT_TYPE)
 @ListenersFor({ @ListenerFor(systemEventClass = PreRenderComponentEvent.class) })
+@ConsumerType
 public class InputSearch extends InputSearchBase implements ClientBehaviorHolder {
 
 	// Private Data Members

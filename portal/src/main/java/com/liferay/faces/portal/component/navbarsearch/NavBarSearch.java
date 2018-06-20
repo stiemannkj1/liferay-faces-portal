@@ -15,11 +15,14 @@ package com.liferay.faces.portal.component.navbarsearch;
 
 import javax.faces.component.FacesComponent;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Juan Gonzalez
  */
 @FacesComponent(value = NavBarSearch.COMPONENT_TYPE)
+@ConsumerType
 public class NavBarSearch extends NavBarSearchBase {
 	// Initial Generation
 }

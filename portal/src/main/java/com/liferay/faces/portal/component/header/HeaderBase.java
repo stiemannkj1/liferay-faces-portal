@@ -19,11 +19,14 @@ import javax.faces.component.html.HtmlPanelGroup;
 
 import com.liferay.faces.util.component.Styleable;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 
 /**
  * @author	Neil Griffin
  */
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
+@ProviderType
 public abstract class HeaderBase extends HtmlPanelGroup implements Styleable {
 
 	// Public Constants

@@ -13,9 +13,13 @@
  */
 package com.liferay.faces.portal.security;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
+
 /**
  * @author  Neil Griffin
  */
+@ConsumerType
 public class AuthorizationException extends RuntimeException {
 
 	// serialVersionUID

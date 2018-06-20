@@ -15,11 +15,14 @@ package com.liferay.faces.portal.component.header;
 
 import javax.faces.component.FacesComponent;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Vernon Singleton
  */
 @FacesComponent(value = Header.COMPONENT_TYPE)
+@ConsumerType
 public class Header extends HeaderBase {
 	// Initial Generation
 }

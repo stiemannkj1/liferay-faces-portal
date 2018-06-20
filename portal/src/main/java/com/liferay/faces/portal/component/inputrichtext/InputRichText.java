@@ -25,6 +25,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 import com.liferay.faces.portal.component.inputrichtext.internal.RichText;
 import com.liferay.faces.portal.component.inputrichtext.internal.RichTextFactory;
 import com.liferay.faces.portal.component.inputrichtext.internal.RichTextFactoryImpl;
@@ -40,6 +42,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
  * @author  Neil Griffin
  */
 @FacesComponent(value = InputRichText.COMPONENT_TYPE)
+@ConsumerType
 public class InputRichText extends InputRichTextBase implements ClientBehaviorHolder {
 
 	// Private Constants

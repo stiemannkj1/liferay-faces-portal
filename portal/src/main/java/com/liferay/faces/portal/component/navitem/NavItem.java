@@ -15,11 +15,14 @@ package com.liferay.faces.portal.component.navitem;
 
 import javax.faces.component.FacesComponent;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Neil Griffin
  */
 @FacesComponent(value = NavItem.COMPONENT_TYPE)
+@ConsumerType
 public class NavItem extends NavItemBase {
 	// Initial Generation
 }

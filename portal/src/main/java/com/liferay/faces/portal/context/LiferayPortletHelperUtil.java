@@ -17,6 +17,8 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import com.liferay.faces.portal.security.AuthorizationException;
 
 import com.liferay.portal.kernel.exception.SystemException;
@@ -37,6 +39,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
  *
  * @author  Neil Griffin
  */
+@ProviderType
 public final class LiferayPortletHelperUtil {
 
 	private LiferayPortletHelperUtil() {

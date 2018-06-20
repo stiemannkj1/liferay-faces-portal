@@ -16,6 +16,8 @@ package com.liferay.faces.portal.component.permissionsurl;
 import javax.faces.component.FacesComponent;
 import javax.faces.context.FacesContext;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 import com.liferay.faces.portal.context.LiferayPortletHelperUtil;
 
 
@@ -23,6 +25,7 @@ import com.liferay.faces.portal.context.LiferayPortletHelperUtil;
  * @author  Vernon Singleton
  */
 @FacesComponent(value = PermissionsURL.COMPONENT_TYPE)
+@ConsumerType
 public class PermissionsURL extends PermissionsURLBase {
 
 	@Override

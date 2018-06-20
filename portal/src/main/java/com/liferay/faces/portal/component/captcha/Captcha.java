@@ -24,6 +24,8 @@ import javax.faces.context.FacesContext;
 import javax.portlet.PortletRequest;
 import javax.portlet.filter.PortletRequestWrapper;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 import com.liferay.faces.util.i18n.I18n;
 import com.liferay.faces.util.i18n.I18nFactory;
 import com.liferay.faces.util.logging.Logger;
@@ -39,6 +41,7 @@ import com.liferay.portal.kernel.captcha.CaptchaUtil;
  * @author  Juan Gonzalez
  */
 @FacesComponent(value = Captcha.COMPONENT_TYPE)
+@ConsumerType
 public class Captcha extends CaptchaBase {
 
 	// Private Constants

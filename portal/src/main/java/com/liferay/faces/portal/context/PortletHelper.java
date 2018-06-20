@@ -27,12 +27,15 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 
 /**
  * This interface defines a set of convenience methods for portlet development.
  *
  * @author  Neil Griffin
  */
+@ProviderType
 public interface PortletHelper {
 
 	/**

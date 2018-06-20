@@ -15,11 +15,14 @@ package com.liferay.faces.portal.component.runtime;
 
 import javax.faces.component.FacesComponent;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Juan Gonzalez
  */
 @FacesComponent(value = Runtime.COMPONENT_TYPE)
+@ConsumerType
 public class Runtime extends RuntimeBase {
 	// Initial Generation
 }

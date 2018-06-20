@@ -21,6 +21,8 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import com.liferay.faces.portal.context.LiferayPortletHelperUtil;
 import com.liferay.faces.portal.context.PortletHelperUtil;
 import com.liferay.faces.util.logging.Logger;
@@ -36,6 +38,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
  *
  * @author  Neil Griffin
  */
+@ProviderType
 public class LiferayLocalePhaseListener implements PhaseListener {
 
 	// serialVersionUID

@@ -28,10 +28,13 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 
+import org.osgi.annotation.versioning.ConsumerType;
+
 
 /**
  * @author  Neil Griffin
  */
+@ConsumerType
 public abstract class PortletHelperWrapper implements PortletHelper, FacesWrapper<PortletHelper> {
 
 	@Override
