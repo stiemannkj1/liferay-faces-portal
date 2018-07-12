@@ -13,6 +13,20 @@
 	<name>jsf-login-portlet</name>
 	<description>This plugin is an alternate JSF 2 portlet for the out-of-the-box Liferay Sign-In portlet.</description>
 
+	<properties>
+		<import.package>
+			Import-Package: \
+				com.liferay.faces.alloy.component.buttonrow;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.field;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.fieldset;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.form;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.outputlink;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.outputtext;version="[1.0.0,2.0.0)",\
+				${default.liferay.faces.imported.packages}
+				*
+		</import.package>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
@@ -50,7 +64,7 @@
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>com.liferay.faces.portal</artifactId>
 			<version>${project.version}</version>
-			<scope>compile</scope>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>

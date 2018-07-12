@@ -14,6 +14,21 @@
 	<description>This plugin is an alternate JSF 2 portlet for the Liferay Create-Account feature.</description>
 
 	<properties>
+		<import.package>
+			Import-Package: \
+				com.liferay.faces.alloy.component.buttonrow;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.column;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.commandbutton;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.field;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.fieldset;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.form;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.inputsecret;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.inputtext;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.messages;version="[1.0.0,2.0.0)",\
+				com.liferay.faces.alloy.component.row;version="[1.0.0,2.0.0)",\
+				${default.liferay.faces.imported.packages}
+				*
+		</import.package>
 		<validate.captcha.for.test>false</validate.captcha.for.test>
 	</properties>
 
@@ -63,6 +78,7 @@
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>com.liferay.faces.portal</artifactId>
 			<version>${project.version}</version>
+			<scope>${war.dependency.scope}</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
